@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+// import './App.css';
+import { useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import Login from './components/Login';
+import Home from './container/Home';
+import { fetchUer } from './utils/fetchUser';
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = fetchUer();
+
+    if (!user) navigate('/login');
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="login" element={<Login />} />
+      <Route path="*" element={<Home />} />
+      {/* <div className="App">
+        <div id="signInDiv"></div>
+        {Object.keys(user).length !== 0 && (
+          <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
+        )}
+
+        {user && (
+          <div>
+            <img src={user.picture} alt={user.name} />
+            <h3>{user.name}</h3>
+          </div>
+        )}
+      </div> */}
+    </Routes>
   );
 }
 
